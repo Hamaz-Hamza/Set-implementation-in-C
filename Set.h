@@ -35,25 +35,21 @@ bool SetContains(Set* set, int value) {
 }
 
 bool InsertIntoSet(Set* set, int value) {
-    if (set == NULL) {
-        printf("Warning: trying to insert element into the set but set uninitialized\n");
-        return false;
-    } else if (SetContains(set, value)) return false;
-    else {
+    if (set == NULL) printf("Warning: trying to insert element into the set but set uninitialized\n");
+    else if (!SetContains(set, value)) {
         VectorPush(set->vector, value);
         return true;
     }
+    return false;
 }
 
 bool DeleteFromSet(Set* set, int value) {
-    if (set == NULL) {
-        printf("Warning: trying to remove element from set but set uninitialized\n");
-        return false;
-    } else if (!SetContains(set, value)) return false;
-    else {
+    if (set == NULL) printf("Warning: trying to remove element from set but set uninitialized\n");
+    else if (SetContains(set, value)) {
         RemoveFromVector(set->vector, value);
         return true;
     }
+    return false;
 }
 
 Set* SetUnion(Set* set1, Set* set2) {
@@ -119,4 +115,3 @@ bool DeleteSet(Set** s) {
         return true;
     }
 }
-
