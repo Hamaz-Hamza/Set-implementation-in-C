@@ -62,10 +62,8 @@ int GetVectorLength(Vector* vector) {
 }
 
 void VectorPush(Vector* vector, int num) {
-    if (vector == NULL) {
-        printf("Warning: trying to push but vector uninitialized\n");
-        return;
-    } else {
+    if (vector == NULL) printf("Warning: trying to push but vector uninitialized\n");
+    else {
         vector->data[vector->length++] = num;
         if (vector->length == vector->size) GrowVector(vector);
     }
@@ -116,8 +114,7 @@ bool VectorInsertAt(Vector* vector, int value, int index) {
         printf("Warning: trying to insert value but index out of bounds\n");
         return false;
     } else {
-        for (int i = vector->length; i > index; i--) 
-            vector->data[i] = vector->data[i-1];
+        for (int i = vector->length; i > index; i--) vector->data[i] = vector->data[i-1];
         vector->data[index] = value;
         if (++vector->length == vector->size) GrowVector(vector);
         return true;
@@ -145,14 +142,9 @@ bool VectorRemoveAt(Vector* vector, int index) {
 }
 
 int FindInVector(Vector* vector, int value) {
-    if (vector == NULL) {
-        printf("Warning: trying to find value but vector uninitialized\n");
-        return -1;
-    } else {
-        for (int i = 0; i < vector->length; i++) 
-            if (vector->data[i] == value) return i;
-        return -1;
-    }
+    if (vector == NULL) printf("Warning: trying to find value but vector uninitialized\n");
+    else for (int i = 0; i < vector->length; i++) if (vector->data[i] == value) return i;
+    return -1;
 }
 
 bool RemoveFromVector(Vector* vector, int value) {
