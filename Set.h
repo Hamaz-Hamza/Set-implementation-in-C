@@ -3,13 +3,19 @@
 #include <limits.h>
 #include "Vector.h"
 
-typedef struct {
-    Vector* vector;
-} Set;
+typedef struct { Vector* vector; } Set;
+
+Set* AllocateSet() {
+    Set* set = (Set*)malloc(sizeof(Set));
+    if (set == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+    return set;
+}
 
 Set* CreateSet() {
-    Set* newSet = NULL;
-    while (newSet == NULL) { newSet = (Set*)malloc(sizeof(Set)); }
+    Set* newSet = AllocateSet();
     newSet->vector = CreateVector();
     return newSet;
 }
@@ -98,6 +104,19 @@ void PrintSet(Set* set) {
         printf("Set: { ");
         for (int i = 0; i < set->vector->length; i++) printf("%d, ", set->vector->data[i]);
         printf("}\n");
+    }
+}
+
+bool DeleteSet(Set** s) {
+    Set* set = *s;
+    if (set == NULL) {
+        printf("Warning: trying to delete set but set uninitialized\n");
+        return false;
+    } else {
+        if (set->vector != NULL) DeleteVector(&set->vector);
+        free(set);
+        *s = NULL;
+        return true;
     }
 }
 
