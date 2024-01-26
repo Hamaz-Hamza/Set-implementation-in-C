@@ -11,10 +11,27 @@ typedef struct {
     int size;
 } Vector;
 
+Vector* AllocateVector() {
+    Vector* newVector = (Vector*)malloc(sizeof(Vector));
+    if (newVector == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+    return newVector;
+}
+
+int* AllocateArray(int size) {
+    int* newArray = (int*)malloc(sizeof(int) * size);
+    if (newArray == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+    return newArray;
+}
+
 Vector* CreateVector() {
-    Vector* newVector = NULL;
-    while (newVector == NULL) { newVector = (Vector*)malloc(sizeof(Vector)); }
-    newVector->data = (int*)malloc(sizeof(int) * vectorMinimumSize);
+    Vector* newVector = AllocateVector();
+    newVector->data = AllocateArray(vectorMinimumSize);
     newVector->length = 0;
     newVector->size = vectorMinimumSize;
     return newVector;
@@ -22,7 +39,7 @@ Vector* CreateVector() {
 
 void GrowVector(Vector* vector) {
     vector->size *= 2;
-    int* newData = (int*)malloc(sizeof(int) * vector->size);
+    int* newData = AllocateArray(vector->size);
     for (int i = 0; i < vector->length; i++) newData[i] = vector->data[i];
     free(vector->data);
     vector->data = newData;
@@ -31,7 +48,7 @@ void GrowVector(Vector* vector) {
 void ShrinkVector(Vector* vector) {
     if (vector->size == vectorMinimumSize) return;
     vector->size /= 2;
-    int* newData = (int*)malloc(sizeof(int) * vector->size);
+    int* newData = AllocateArray(vector->size);
     for (int i = 0; i < vector->length; i++) newData[i] = vector->data[i];
     free(vector->data);
     vector->data = newData;
@@ -154,5 +171,18 @@ void PrintVector(Vector* vector) {
         printf("Vector: { length: %d, size: %d, data: { ", vector->length, vector->size);
         for (int i = 0; i < vector->length; i++) printf("%d, ", vector->data[i]);
         printf("} }\n");
+    }
+}
+
+bool DeleteVector(Vector** vec) {
+    Vector* vector = *vec;
+    if (vector == NULL) {
+        printf("Warning: trying to delete vector but vector uninitialized\n");
+        return false;
+    } else {
+        if (vector->data != NULL) free(vector->data);
+        free(vector);
+        *vec = NULL;
+        return true;
     }
 }
