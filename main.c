@@ -27,4 +27,11 @@ int main() {
 
     Set* set2_minus_set1 = SubtractSet(set2, set1);
     PrintSet(set2_minus_set1);
+
+    DeleteSet(&set1);
+    DeleteSet(&set2);
+    DeleteSet(&unionSet);
+    DeleteSet(&intersectionSet);
+    DeleteSet(&set1_minus_set2);
+    DeleteSet(&set2_minus_set1);
 }
